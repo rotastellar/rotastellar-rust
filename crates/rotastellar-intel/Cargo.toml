@@ -1,0 +1,13 @@
+[package]
+name = "rotastellar-intel"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Orbital intelligence and space situational awareness"
+readme = "README.md"
+keywords = ["space", "satellite", "tracking", "conjunction-analysis"]
+categories = ["science", "aerospace"]
+
+[dependencies]

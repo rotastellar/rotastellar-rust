@@ -1,0 +1,20 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/rotastellar",
+    "crates/rotastellar-compute",
+    "crates/rotastellar-intel",
+    "crates/rotastellar-track",
+]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+rust-version = "1.70"
+license = "MIT"
+repository = "https://github.com/rotastellar/rotastellar-rust"
+homepage = "https://rotastellar.com"
+documentation = "https://docs.rs/rotastellar"
+authors = ["Rota, Inc. <hello@rotastellar.com>"]
+keywords = ["space", "orbital", "satellite", "simulation"]
+categories = ["science", "simulation", "aerospace"]

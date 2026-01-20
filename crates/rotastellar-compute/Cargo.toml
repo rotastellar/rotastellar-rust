@@ -1,0 +1,13 @@
+[package]
+name = "rotastellar-compute"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Orbital compute planning and simulation tools"
+readme = "README.md"
+keywords = ["space", "orbital", "data-center", "thermal-simulation"]
+categories = ["science", "simulation"]
+
+[dependencies]

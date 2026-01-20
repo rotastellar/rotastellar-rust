@@ -1,0 +1,13 @@
+[package]
+name = "rotastellar-track"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "High-performance satellite tracking and TLE propagation"
+readme = "README.md"
+keywords = ["space", "satellite", "tracking", "tle", "sgp4"]
+categories = ["science", "aerospace"]
+
+[dependencies]

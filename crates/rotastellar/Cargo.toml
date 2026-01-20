@@ -1,0 +1,19 @@
+[package]
+name = "rotastellar"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+description = "Rust SDK for RotaStellar - Space Computing Infrastructure"
+readme = "README.md"
+keywords = ["space", "orbital", "satellite", "data-center", "space-computing"]
+categories = ["science", "simulation", "aerospace"]
+
+[dependencies]
+# Dependencies will be added when SDK is developed
+
+[dev-dependencies]
+# Dev dependencies will be added
