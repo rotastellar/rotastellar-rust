@@ -1,0 +1,13 @@
+[package]
+name = "rotastellar-distributed"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Distributed compute coordination for Earth-space AI workloads"
+readme = "README.md"
+keywords = ["space", "distributed-computing", "federated-learning", "orbital-compute"]
+categories = ["science", "simulation", "concurrency"]
+
+[dependencies]

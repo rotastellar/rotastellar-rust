@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "crates/rotastellar",
     "crates/rotastellar-compute",
+    "crates/rotastellar-distributed",
     "crates/rotastellar-intel",
     "crates/rotastellar-track",
 ]

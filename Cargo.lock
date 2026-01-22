@@ -11,6 +11,10 @@ name = "rotastellar-compute"
 version = "0.0.1"
 
 [[package]]
+name = "rotastellar-distributed"
+version = "0.0.1"
+
+[[package]]
 name = "rotastellar-intel"
 version = "0.0.1"
 

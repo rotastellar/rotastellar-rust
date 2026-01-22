@@ -1,1 +1,0 @@
-/Users/subhadipmitra/Dev/rotastellar-packages/rotastellar-rust/target/debug/librotastellar_intel.rlib: /Users/subhadipmitra/Dev/rotastellar-packages/rotastellar-rust/crates/rotastellar-intel/src/lib.rs
