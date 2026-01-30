@@ -7,7 +7,7 @@ repository.workspace = true
 authors.workspace = true
 description = "Distributed compute coordination for Earth-space AI workloads"
 readme = "README.md"
-keywords = ["space", "distributed-computing", "federated-learning", "orbital-compute", "mesh-routing"]
+keywords = ["space", "distributed", "federated-learning", "orbital", "mesh-routing"]
 categories = ["science", "simulation", "concurrency"]
 
 [dependencies]
