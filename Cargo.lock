@@ -784,7 +784,7 @@ dependencies = [
 
 [[package]]
 name = "rotastellar"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "lazy_static",
  "regex",
@@ -797,7 +797,7 @@ dependencies = [
 
 [[package]]
 name = "rotastellar-compute"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "rotastellar",
  "serde",
@@ -806,7 +806,7 @@ dependencies = [
 
 [[package]]
 name = "rotastellar-distributed"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "rotastellar",
  "serde",
@@ -815,7 +815,7 @@ dependencies = [
 
 [[package]]
 name = "rotastellar-intel"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "chrono",
  "rotastellar",
@@ -827,7 +827,7 @@ dependencies = [
 
 [[package]]
 name = "rotastellar-track"
-version = "0.1.0"
+version = "0.1.1"
 
 [[package]]
 name = "rustix"

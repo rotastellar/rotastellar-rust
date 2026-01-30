@@ -11,6 +11,6 @@ keywords = ["space", "orbital", "data-center", "thermal-simulation", "power-anal
 categories = ["science", "simulation"]
 
 [dependencies]
-rotastellar = { version = "0.1.0", path = "../rotastellar" }
+rotastellar = { version = "0.1.1", path = "../rotastellar" }
 serde = { version = "1.0", features = ["derive"] }
 thiserror = "1.0"
