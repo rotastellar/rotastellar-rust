@@ -16,6 +16,9 @@ license = "MIT"
 repository = "https://github.com/rotastellar/rotastellar-rust"
 homepage = "https://rotastellar.com"
 documentation = "https://docs.rs/rotastellar"
-authors = ["Rota, Inc. <hello@rotastellar.com>"]
+authors = [
+    "Subhadip Mitra <subhadipmitra@rotastellar.com>",
+    "RotaStellar Research <research@rotastellar.com>",
+]
 keywords = ["space", "orbital", "satellite", "simulation"]
 categories = ["science", "simulation", "aerospace"]

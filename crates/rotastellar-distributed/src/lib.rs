@@ -2,281 +2,123 @@
 //!
 //! Distributed compute coordination for Earth-space AI workloads.
 //!
-//! Coordinate AI workloads across Earth and orbital infrastructure with
-//! federated learning, model partitioning, and bandwidth-optimized sync.
+//! ## Overview
 //!
-//! **Launching Q1 2026**
+//! This crate provides tools for coordinating AI workloads across Earth and
+//! orbital infrastructure, including:
 //!
-//! ## Features (Coming Soon)
+//! - **Federated Learning** — Train models across distributed nodes with gradient compression
+//! - **Model Partitioning** — Optimal layer placement across ground and orbital compute
+//! - **Sync Scheduling** — Ground station pass planning and priority queuing
+//! - **Space Mesh** — ISL routing for orbital node communication
 //!
-//! ### Federated Learning
-//! - `FederatedClient` - Local training on Earth or orbital nodes
-//! - `GradientAggregator` - Central gradient synchronization
-//! - `CompressionConfig` - TopK sparsification + quantization
+//! ## Example
 //!
-//! ### Model Partitioning
-//! - `PartitionOptimizer` - Find optimal layer placement
-//! - `ModelProfile` - Model structure analysis
-//! - `LayerPlacement` - Ground vs orbital assignment
+//! ```rust
+//! use rotastellar_distributed::{
+//!     FederatedClient, CompressionConfig, GradientAggregator, AggregationStrategy,
+//!     ModelProfile, PartitionOptimizer, OptimizationObjective,
+//!     SyncScheduler, Priority,
+//!     SpaceMesh, create_constellation,
+//! };
 //!
-//! ### Sync Scheduler
-//! - `SyncScheduler` - Ground station pass planning
-//! - `GroundStation` - Station configuration
-//! - `PriorityQueue` - Bandwidth-aware queuing
+//! // Federated learning with gradient compression
+//! let mut client = FederatedClient::orbital("orbital-1");
+//! let model_params = vec![0.1, 0.2, 0.3, 0.4, 0.5];
+//! let gradients = client.compute_gradients(&model_params, &[]);
+//! let compressed = client.compress(&gradients);
+//! println!("Compression ratio: {:.4}", compressed.compression_ratio);
 //!
-//! ### Space Mesh
-//! - `SpaceMesh` - ISL routing for orbital communication
+//! // Model partitioning
+//! let model = ModelProfile::create_transformer(6, 768, 50000, 512);
+//! let optimizer = PartitionOptimizer::default();
+//! let plan = optimizer.optimize(&model, OptimizationObjective::Balance);
+//! println!("Ground layers: {}, Orbital layers: {}",
+//!     plan.ground_layers().len(), plan.orbital_layers().len());
 //!
-//! ## Example (Coming Soon)
+//! // Sync scheduling
+//! let mut scheduler = SyncScheduler::new();
+//! scheduler.schedule_sync("orbital-1", 1024*1024, Priority::High, "Upload gradients");
 //!
-//! ```rust,ignore
-//! use rotastellar_distributed::{FederatedClient, CompressionConfig};
-//!
-//! let compression = CompressionConfig::new()
-//!     .method(CompressionMethod::TopKQuantized)
-//!     .k_ratio(0.01)
-//!     .quantization_bits(8);
-//!
-//! let client = FederatedClient::new("orbital-3", compression);
-//! let gradients = client.train_step(&model, &batch);
-//! client.sync(gradients, Priority::High);
+//! // Space mesh routing
+//! let mesh = create_constellation("test", 4, 10, 550.0, 53.0, 5000.0);
+//! let route = mesh.find_route("test_P0_S0", "test_P2_S5");
+//! if route.is_valid() {
+//!     println!("Route: {:?}, Latency: {:.1}ms", route.path, route.total_latency_ms);
+//! }
 //! ```
 
+#![doc(html_root_url = "https://docs.rs/rotastellar-distributed/0.1.0")]
 #![warn(missing_docs)]
+
+pub mod core;
+pub mod federated;
+pub mod mesh;
+pub mod partitioning;
+pub mod sync;
+
+// Re-export commonly used items
+pub use core::{NodeConfig, NodeType, Topology, TrainingMetrics};
+
+pub use federated::{
+    AggregationStrategy, CompressedGradient, CompressionConfig, CompressionMethod,
+    FederatedClient, GradientAggregator, GradientCompressor,
+};
+
+pub use partitioning::{
+    LayerPlacement, LayerProfile, LayerType, ModelProfile, OptimizationObjective,
+    PartitionOptimizer, PartitionPlan, PlacementLocation,
+};
+
+pub use sync::{GroundStation, Priority, PriorityQueue, SyncScheduler, SyncTask};
+
+pub use mesh::{create_constellation, ISLLink, LinkType, OrbitalNode, Route, SpaceMesh};
 
 /// Current version of the crate.
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-// ============================================================================
-// Federated Learning
-// ============================================================================
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-/// Compression method for gradient synchronization.
-#[derive(Debug, Clone, Copy)]
-pub enum CompressionMethod {
-    /// Top-K sparsification only
-    TopK,
-    /// Top-K with quantization
-    TopKQuantized,
-    /// Random-K sparsification
-    RandomK,
-}
-
-/// Configuration for gradient compression.
-pub struct CompressionConfig;
-
-impl CompressionConfig {
-    /// Create a new compression configuration.
-    pub fn new() -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-impl Default for CompressionConfig {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-/// Client for federated learning on Earth or orbital nodes.
-pub struct FederatedClient;
-
-impl FederatedClient {
-    /// Create a new federated client.
-    pub fn new(_node_id: &str, _compression: CompressionConfig) -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-/// Central aggregator for gradient synchronization.
-pub struct GradientAggregator;
-
-impl GradientAggregator {
-    /// Create a new gradient aggregator.
-    pub fn new() -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-impl Default for GradientAggregator {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-// ============================================================================
-// Model Partitioning
-// ============================================================================
-
-/// Profile of a model's layers and compute requirements.
-pub struct ModelProfile;
-
-impl ModelProfile {
-    /// Create a profile from an ONNX model.
-    pub fn from_onnx(_path: &str) -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-/// Optimizer for model partitioning across Earth and orbital nodes.
-pub struct PartitionOptimizer;
-
-impl PartitionOptimizer {
-    /// Create a new partition optimizer.
-    pub fn new() -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-impl Default for PartitionOptimizer {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-/// Placement decision for model layers.
-pub struct LayerPlacement;
-
-// ============================================================================
-// Sync Scheduler
-// ============================================================================
-
-/// Ground station configuration.
-pub struct GroundStation;
-
-impl GroundStation {
-    /// Create a new ground station.
-    pub fn new(_name: &str, _lat: f64, _lon: f64) -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-/// Priority level for sync operations.
-#[derive(Debug, Clone, Copy)]
-pub enum Priority {
-    /// Critical priority - sync immediately
-    Critical,
-    /// High priority
-    High,
-    /// Normal priority
-    Normal,
-    /// Low priority - sync when convenient
-    Low,
-}
-
-/// Scheduler for data synchronization across ground station passes.
-pub struct SyncScheduler;
-
-impl SyncScheduler {
-    /// Create a new sync scheduler.
-    pub fn new() -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-impl Default for SyncScheduler {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-/// Priority queue for bandwidth-aware sync operations.
-pub struct PriorityQueue;
-
-impl PriorityQueue {
-    /// Create a new priority queue.
-    pub fn new() -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-impl Default for PriorityQueue {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-// ============================================================================
-// Space Mesh
-// ============================================================================
-
-/// ISL routing mesh for orbital node communication.
-pub struct SpaceMesh;
-
-impl SpaceMesh {
-    /// Create a new space mesh.
-    pub fn new() -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
+    #[test]
+    fn version_is_set() {
+        assert!(!VERSION.is_empty());
     }
 
-    /// Add an orbital node to the mesh.
-    pub fn add_node(&mut self, _node_id: &str, _orbit_alt: f64) {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
+    #[test]
+    fn test_federated_integration() {
+        let mut client = FederatedClient::orbital("sat-1");
+        let params = vec![0.1, 0.2, 0.3, 0.4, 0.5];
+        let grads = client.compute_gradients(&params, &[]);
+        let compressed = client.compress(&grads);
+
+        assert!(compressed.compression_ratio < 1.0);
     }
 
-    /// Find optimal route between nodes.
-    pub fn find_route(&self, _source: &str, _destination: &str) {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
+    #[test]
+    fn test_partitioning_integration() {
+        let model = ModelProfile::create_transformer(6, 768, 50000, 512);
+        let optimizer = PartitionOptimizer::default();
+        let plan = optimizer.optimize(&model, OptimizationObjective::Balance);
+
+        assert!(!plan.placements.is_empty());
     }
-}
 
-impl Default for SpaceMesh {
-    fn default() -> Self {
-        Self::new()
+    #[test]
+    fn test_sync_integration() {
+        let mut scheduler = SyncScheduler::new();
+        let task_id = scheduler.schedule_sync("orbital-1", 1024 * 1024, Priority::High, "test");
+
+        assert!(!task_id.is_empty());
+        assert_eq!(scheduler.queue.size(), 1);
     }
-}
 
-// ============================================================================
-// Core Types
-// ============================================================================
+    #[test]
+    fn test_mesh_integration() {
+        let mesh = create_constellation("test", 2, 4, 550.0, 53.0, 5000.0);
+        let stats = mesh.get_mesh_stats();
 
-/// Node type in the Earth-space infrastructure.
-#[derive(Debug, Clone, Copy)]
-pub enum NodeType {
-    /// Ground-based node
-    Ground,
-    /// Orbital node
-    Orbital,
-}
-
-/// Configuration for an Earth or orbital compute node.
-pub struct NodeConfig;
-
-impl NodeConfig {
-    /// Create a new node configuration.
-    pub fn new(_node_id: &str, _node_type: NodeType) -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-/// Topology of Earth-space compute infrastructure.
-pub struct Topology;
-
-impl Topology {
-    /// Create a new topology.
-    pub fn new() -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-impl Default for Topology {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-/// Metrics for distributed training.
-pub struct TrainingMetrics;
-
-impl TrainingMetrics {
-    /// Create new training metrics.
-    pub fn new() -> Self {
-        unimplemented!("rotastellar-distributed launching Q1 2026. https://rotastellar.com")
-    }
-}
-
-impl Default for TrainingMetrics {
-    fn default() -> Self {
-        Self::new()
+        assert_eq!(stats.get("total_nodes"), Some(&8.0));
     }
 }

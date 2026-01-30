@@ -1,6 +1,9 @@
 name: Publish to crates.io
 
 on:
+  push:
+    tags:
+      - 'v*'
   release:
     types: [published]
   workflow_dispatch:
@@ -16,12 +19,20 @@ jobs:
 
       - name: Publish rotastellar
         run: cargo publish -p rotastellar --token ${{ secrets.CRATES_IO_TOKEN }}
+        continue-on-error: true
 
       - name: Publish rotastellar-compute
         run: cargo publish -p rotastellar-compute --token ${{ secrets.CRATES_IO_TOKEN }}
+        continue-on-error: true
 
       - name: Publish rotastellar-intel
         run: cargo publish -p rotastellar-intel --token ${{ secrets.CRATES_IO_TOKEN }}
+        continue-on-error: true
+
+      - name: Publish rotastellar-distributed
+        run: cargo publish -p rotastellar-distributed --token ${{ secrets.CRATES_IO_TOKEN }}
+        continue-on-error: true
 
       - name: Publish rotastellar-track
         run: cargo publish -p rotastellar-track --token ${{ secrets.CRATES_IO_TOKEN }}
+        continue-on-error: true

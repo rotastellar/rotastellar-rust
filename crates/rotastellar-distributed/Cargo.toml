@@ -7,7 +7,10 @@ repository.workspace = true
 authors.workspace = true
 description = "Distributed compute coordination for Earth-space AI workloads"
 readme = "README.md"
-keywords = ["space", "distributed-computing", "federated-learning", "orbital-compute"]
+keywords = ["space", "distributed-computing", "federated-learning", "orbital-compute", "mesh-routing"]
 categories = ["science", "simulation", "concurrency"]
 
 [dependencies]
+rotastellar = { version = "0.0.1", path = "../rotastellar" }
+serde = { version = "1.0", features = ["derive"] }
+thiserror = "1.0"
